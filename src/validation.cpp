@@ -640,7 +640,7 @@ bool MemPoolAccept::PreChecks(ATMPArgs& args, Workspace& ws)
                 // insecure.
                 bool fReplacementOptOut = true;
 
-                // Litecoin: Only support BIP125 RBF when -mempoolreplacement arg is set
+                // Chobber: Only support BIP125 RBF when -mempoolreplacement arg is set
                 if (gArgs.GetArg("-mempoolreplacement", DEFAULT_ENABLE_REPLACEMENT)) {
                     for (const CTxIn &_txin : ptxConflicting->vin)
                     {
@@ -1270,7 +1270,7 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
     if (halvings >= 64)
         return 0;
 
-    CAmount nSubsidy = 50 * COIN;
+    CAmount nSubsidy = 250 * COIN;
     // Subsidy is cut in half every 210,000 blocks which will occur approximately every 4 years.
     nSubsidy >>= halvings;
     return nSubsidy;

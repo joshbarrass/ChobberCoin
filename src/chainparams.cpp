@@ -14,9 +14,16 @@
 #include <versionbitsinfo.h>
 
 #include <assert.h>
+#include <iostream>
 
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
+
+bool add_assert_message(std::string msg)
+{
+  std::cerr << msg.c_str() << std::endl;
+  return false;
+}
 
 static CBlock CreateGenesisBlock(const char* pszTimestamp, const CScript& genesisOutputScript, uint32_t nTime, uint32_t nNonce, uint32_t nBits, int32_t nVersion, const CAmount& genesisReward)
 {
@@ -116,8 +123,13 @@ public:
 
         genesis = CreateGenesisBlock(1655508267, 2709506250, 0x1e0ffff0, 1, 250 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x12a765e31ffd4059bada1e25190f6e98c99d9714d334efa41a195a7e7e04bfe2"));
-        assert(genesis.hashMerkleRoot == uint256S("0x97ddfbbae6be97fd6cdf3e7ca13232a3afff2353e29badfab7f73011edd4ced9"));
+
+        std::ostringstream genesis_msg;
+        genesis_msg << "Genesis block hash: " << consensus.hashGenesisBlock.GetHex() << std::endl;
+        assert(consensus.hashGenesisBlock == uint256S("0xf75e8b5826c2021d7a2c2be5ee3723eef04162798e6fa76ace6afe6bd2c07bd1") || add_assert_message(genesis_msg.str()));
+        std::ostringstream merkle_msg;
+        merkle_msg << "Merkle root hash: " << genesis.hashMerkleRoot.GetHex() << std::endl;
+        assert(genesis.hashMerkleRoot == uint256S("0xf4d6127b20010bcec5d9c7c95de564533595971ee077a5a40bc7adc64d84a172") || add_assert_message(merkle_msg.str()));
 
         // Note that of those which support the service bits prefix, most only support a subset of
         // possible options.
@@ -230,8 +242,14 @@ public:
 
         genesis = CreateGenesisBlock(1486949366, 293345, 0x1e0ffff0, 1, 250 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x4966625a4b2851d9fdee139e56211a0d88575f59ed816ff5e6a63deb4e3e29a0"));
-        assert(genesis.hashMerkleRoot == uint256S("0x97ddfbbae6be97fd6cdf3e7ca13232a3afff2353e29badfab7f73011edd4ced9"));
+        // assert(consensus.hashGenesisBlock == uint256S("0x4966625a4b2851d9fdee139e56211a0d88575f59ed816ff5e6a63deb4e3e29a0"));
+        // assert(genesis.hashMerkleRoot == uint256S("0x97ddfbbae6be97fd6cdf3e7ca13232a3afff2353e29badfab7f73011edd4ced9"));
+        std::ostringstream genesis_msg;
+        genesis_msg << "Genesis block hash: " << consensus.hashGenesisBlock.GetHex() << std::endl;
+        assert(consensus.hashGenesisBlock == uint256S("0x20f3ec868b05ecb4a5a96912a0c7f48c3583311b16d8f5264c76c1e4c0445af9") || add_assert_message(genesis_msg.str()));
+        std::ostringstream merkle_msg;
+        merkle_msg << "Merkle root hash: " << genesis.hashMerkleRoot.GetHex() << std::endl;
+        assert(genesis.hashMerkleRoot == uint256S("0xf4d6127b20010bcec5d9c7c95de564533595971ee077a5a40bc7adc64d84a172") || add_assert_message(merkle_msg.str()));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -329,8 +347,14 @@ public:
 
         genesis = CreateGenesisBlock(1296688602, 0, 0x207fffff, 1, 250 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0x530827f38f93b43ed12af0b3ad25a288dc02ed74d6d7857862df51fc56c416f9"));
-        assert(genesis.hashMerkleRoot == uint256S("0x97ddfbbae6be97fd6cdf3e7ca13232a3afff2353e29badfab7f73011edd4ced9"));
+        // assert(consensus.hashGenesisBlock == uint256S("0x530827f38f93b43ed12af0b3ad25a288dc02ed74d6d7857862df51fc56c416f9"));
+        // assert(genesis.hashMerkleRoot == uint256S("0x97ddfbbae6be97fd6cdf3e7ca13232a3afff2353e29badfab7f73011edd4ced9"));
+        std::ostringstream genesis_msg;
+        genesis_msg << "Genesis block hash: " << consensus.hashGenesisBlock.GetHex() << std::endl;
+        assert(consensus.hashGenesisBlock == uint256S("0x0737de39c455c60a8584da2746d089d0efc9c6206f62c47eac49f3a0f1e5efe4") || add_assert_message(genesis_msg.str()));
+        std::ostringstream merkle_msg;
+        merkle_msg << "Merkle root hash: " << genesis.hashMerkleRoot.GetHex() << std::endl;
+        assert(genesis.hashMerkleRoot == uint256S("0xf4d6127b20010bcec5d9c7c95de564533595971ee077a5a40bc7adc64d84a172") || add_assert_message(merkle_msg.str()));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
         vSeeds.clear();      //!< Regtest mode doesn't have any DNS seeds.

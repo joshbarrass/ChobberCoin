@@ -1,0 +1,38 @@
+FROM ubuntu:20.04
+
+# install tzdata separately for cacheing
+ARG DEBIAN_FRONTEND=noninteractive
+ENV TZ=Europe/London
+RUN truncate -s0 /tmp/preseed.cfg && \
+       (echo "tzdata tzdata/Areas select Europe" >> /tmp/preseed.cfg) && \
+       (echo "tzdata tzdata/Zones/Europe select London" >> /tmp/preseed.cfg) && \
+       debconf-set-selections /tmp/preseed.cfg && \
+       rm -f /etc/timezone /etc/localtime && \
+       apt-get update && \
+       DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
+       apt-get install -y tzdata \
+  && rm -rf /var/lib/apt/lists/*
+
+# install packages
+RUN  apt-get update \
+  && apt-get install -y build-essential libtool autotools-dev automake pkg-config bsdmainutils python3 libevent-dev libboost-system-dev libboost-filesystem-dev libboost-test-dev libboost-thread-dev libsqlite3-dev libminiupnpc-dev libzmq3-dev libqt5gui5 libqt5core5a libqt5dbus5 qttools5-dev qttools5-dev-tools libqrencode-dev \
+  && rm -rf /var/lib/apt/lists/*
+
+# additional depends for berkeley db
+RUN  apt-get update \
+  && apt-get install -y wget \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN addgroup --gid 1000 --system nonroot && adduser -u 1000 --system --gid 1000 --home /home/nonroot nonroot
+RUN mkdir -p /code/ && chown -R nonroot:nonroot /code/
+USER nonroot
+
+# get remaining libs
+USER root
+RUN  apt-get update \
+  && apt-get install -y libssl-dev libfmt-dev \
+  && rm -rf /var/lib/apt/lists/*
+USER nonroot
+
+VOLUME /code
+WORKDIR /code

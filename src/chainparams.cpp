@@ -74,35 +74,39 @@ public:
         consensus.signet_blocks = false;
         consensus.signet_challenge.clear();
         consensus.nSubsidyHalvingInterval = 168000;
-        consensus.BIP16Height = 218579; // 87afb798a3ad9378fcd56123c81fb31cfd9a8df4719b9774d71730c16315a092 - October 1, 2012
-        consensus.BIP34Height = 710000;
-        consensus.BIP34Hash = uint256S("0xfa09d204a83a768ed5a7c8d441fa62f2043abf420cff1226c7b4329aeb9d51cf");
-        consensus.BIP65Height = 918684; // bab3041e8977e0dc3eeff63fe707b92bde1dd449d8efafb248c27c8264cc311a
-        consensus.BIP66Height = 811879; // 7aceee012833fa8952f8835d8b1b3ae233cd6ab08fdb27a771d2bd7bdc491894
-        consensus.CSVHeight = 1201536; // 53e0af7626f7f51ce9f3b6cfc36508a5b1d2f6c4a75ac215dc079442692a4c0b
-        consensus.SegwitHeight = 1201536; // 0000000000000000001c8018d9cb3b742ef25114f27563e3fc4a1902167f9893
-        consensus.MinBIP9WarningHeight = 1209600; // segwit activation height + miner confirmation window
-        consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+
         consensus.nPowTargetTimespan = 24 * 60 * 60; // 1 days
         consensus.nPowTargetSpacing = 2 * 60;
-        consensus.fPowAllowMinDifficultyBlocks = false;
-        consensus.fPowNoRetargeting = false;
         int confirmWindowParam = consensus.nPowTargetTimespan / consensus.nPowTargetSpacing;
         consensus.nRuleChangeActivationThreshold = 3*confirmWindowParam; // 75% of confirm window
         consensus.nMinerConfirmationWindow = confirmWindowParam * 4;
+
+        // activate all BIPs immediately 
+        consensus.BIP16Height = 0; 
+        consensus.BIP34Height = 0;
+        consensus.BIP34Hash = uint256();
+        consensus.BIP65Height = 0;
+        consensus.BIP66Height = 0;
+        consensus.CSVHeight = 0;
+        consensus.SegwitHeight = 0;
+        consensus.MinBIP9WarningHeight = 0;
+        consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
+        consensus.fPowAllowMinDifficultyBlocks = false;
+        consensus.fPowNoRetargeting = false;
+        
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = Consensus::BIP9Deployment::NEVER_ACTIVE;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
 
-        // Deployment of Taproot (BIPs 340-342)
+        // Deployment of Taproot (BIPs 340-342) immediately
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].bit = 2;
-        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nStartHeight = 2161152; // End November 2021
-        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeoutHeight = 2370816; // 364 days later
+        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;
+        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
 
-        // Deployment of MWEB (LIP-0002, LIP-0003, and LIP-0004)
+        // Deployment of MWEB (LIP-0002, LIP-0003, and LIP-0004) immediately
         consensus.vDeployments[Consensus::DEPLOYMENT_MWEB].bit = 4;
-        consensus.vDeployments[Consensus::DEPLOYMENT_MWEB].nStartHeight = 2217600; // End Feb 2022
-        consensus.vDeployments[Consensus::DEPLOYMENT_MWEB].nTimeoutHeight = 2427264; // 364 days later
+        consensus.vDeployments[Consensus::DEPLOYMENT_MWEB].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;
+        consensus.vDeployments[Consensus::DEPLOYMENT_MWEB].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
 
         consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000702edaa57d42a9fd9e2");
         consensus.defaultAssumeValid = uint256S("0x62e2e3d21343a00994d38a63524867507dbeee6850e8fbf02e9c47a3ccf82f24"); // 2186382
@@ -118,8 +122,8 @@ public:
         pchMessageStart[3] = 0xc4;
         nDefaultPort = 9998;
         nPruneAfterHeight = 100000;
-        m_assumed_blockchain_size = 40;
-        m_assumed_chain_state_size = 2;
+        m_assumed_blockchain_size = 0;
+        m_assumed_chain_state_size = 0;
 
         genesis = CreateGenesisBlock(1655508267, 2709506250, 0x1e0ffff0, 1, 250 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
@@ -200,34 +204,38 @@ public:
         consensus.signet_blocks = false;
         consensus.signet_challenge.clear();
         consensus.nSubsidyHalvingInterval = 840000;
+
+        consensus.nPowTargetTimespan = 24 * 60 * 60; // 1 days
+        consensus.nPowTargetSpacing = 2 * 60;
+        int confirmWindowParam = consensus.nPowTargetTimespan / consensus.nPowTargetSpacing;
+        consensus.nRuleChangeActivationThreshold = 3*confirmWindowParam; // 75% of confirm window
+        consensus.nMinerConfirmationWindow = confirmWindowParam * 4;
+
         consensus.BIP16Height = 0; // always enforce P2SH BIP16 on testnet
-        consensus.BIP34Height = 76;
-        consensus.BIP34Hash = uint256S("8075c771ed8b495ffd943980a95f702ab34fce3c8c54e379548bda33cc8c0573");
-        consensus.BIP65Height = 76; // 8075c771ed8b495ffd943980a95f702ab34fce3c8c54e379548bda33cc8c0573
-        consensus.BIP66Height = 76; // 8075c771ed8b495ffd943980a95f702ab34fce3c8c54e379548bda33cc8c0573
-        consensus.CSVHeight = 6048; // 00000000025e930139bac5c6c31a403776da130831ab85be56578f3fa75369bb
-        consensus.SegwitHeight = 6048; // 00000000002b980fcd729daaa248fd9316a5200e9b367f4ff2c42453e84201ca
-        consensus.MinBIP9WarningHeight = 8064; // segwit activation height + miner confirmation window
+        consensus.BIP34Height = 0;
+        consensus.BIP34Hash = uint256();
+        consensus.BIP65Height = 0;
+        consensus.BIP66Height = 0;
+        consensus.CSVHeight = 0;
+        consensus.SegwitHeight = 0;
+        consensus.MinBIP9WarningHeight = 0;
         consensus.powLimit = uint256S("00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        consensus.nPowTargetTimespan = 3.5 * 24 * 60 * 60; // 3.5 days
-        consensus.nPowTargetSpacing = 2.5 * 60;
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = false;
-        consensus.nRuleChangeActivationThreshold = 1512; // 75% for testchains
-        consensus.nMinerConfirmationWindow = 2016; // nPowTargetTimespan / nPowTargetSpacing
+
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = Consensus::BIP9Deployment::NEVER_ACTIVE;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
 
-        // Deployment of Taproot (BIPs 340-342)
+        // Deployment of Taproot (BIPs 340-342) immediately
         consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].bit = 2;
-        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nStartHeight = 2225664; // March 2022
-        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeoutHeight = 2435328; // 364 days later
+        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;
+        consensus.vDeployments[Consensus::DEPLOYMENT_TAPROOT].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
 
-        // Deployment of MWEB (LIP-0002, LIP-0003, and LIP-0004)
+        // Deployment of MWEB (LIP-0002, LIP-0003, and LIP-0004) immediately
         consensus.vDeployments[Consensus::DEPLOYMENT_MWEB].bit = 4;
-        consensus.vDeployments[Consensus::DEPLOYMENT_MWEB].nStartHeight = 2209536; // Jan/Feb 2022
-        consensus.vDeployments[Consensus::DEPLOYMENT_MWEB].nTimeoutHeight = 2419200; // 364 days later
+        consensus.vDeployments[Consensus::DEPLOYMENT_MWEB].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;
+        consensus.vDeployments[Consensus::DEPLOYMENT_MWEB].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
 
         consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000004260a1758f04aa");
         consensus.defaultAssumeValid = uint256S("0x4a280c0e150e3b74ebe19618e6394548c8a39d5549fd9941b9c431c73822fbd5"); // 1737876
@@ -238,8 +246,8 @@ public:
         pchMessageStart[3] = 0xe1;
         nDefaultPort = 19998;
         nPruneAfterHeight = 1000;
-        m_assumed_blockchain_size = 4;
-        m_assumed_chain_state_size = 1;
+        m_assumed_blockchain_size = 0;
+        m_assumed_chain_state_size = 0;
 
         genesis = CreateGenesisBlock(1486949366, 293345, 0x1e0ffff0, 1, 250 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
@@ -305,16 +313,16 @@ public:
         consensus.signet_challenge.clear();
         consensus.nSubsidyHalvingInterval = 150;
         consensus.BIP16Height = 0;
-        consensus.BIP34Height = 500; // BIP34 activated on regtest (Used in functional tests)
+        consensus.BIP34Height = 0; // BIP34 is always activated on regtest
         consensus.BIP34Hash = uint256();
-        consensus.BIP65Height = 1351; // BIP65 activated on regtest (Used in functional tests)
-        consensus.BIP66Height = 1251; // BIP66 activated on regtest (Used in functional tests)
-        consensus.CSVHeight = 432; // CSV activated on regtest (Used in rpc activation tests)
+        consensus.BIP65Height = 0; // BIP65 always activated on regtest
+        consensus.BIP66Height = 0; // BIP66 always activated on regtest
+        consensus.CSVHeight = 0; // CSV is always activated on regtest
         consensus.SegwitHeight = 0; // SEGWIT is always activated on regtest unless overridden
         consensus.MinBIP9WarningHeight = 0;
         consensus.powLimit = uint256S("7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        consensus.nPowTargetTimespan = 3.5 * 24 * 60 * 60; // 3.5 days
-        consensus.nPowTargetSpacing = 2.5 * 60;
+        consensus.nPowTargetTimespan = 24 * 60 * 60; // 1 days
+        consensus.nPowTargetSpacing = 2 * 60;
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = true;
         consensus.nRuleChangeActivationThreshold = 108; // 75% for testchains
@@ -330,7 +338,7 @@ public:
 
         // Deployment of MWEB (LIP-0002 and LIP-0003)
         consensus.vDeployments[Consensus::DEPLOYMENT_MWEB].bit = 4;
-        consensus.vDeployments[Consensus::DEPLOYMENT_MWEB].nStartTime = 1601450001; // September 30, 2020
+        consensus.vDeployments[Consensus::DEPLOYMENT_MWEB].nStartTime = Consensus::BIP9Deployment::ALWAYS_ACTIVE;; // September 30, 2020
         consensus.vDeployments[Consensus::DEPLOYMENT_MWEB].nTimeout = Consensus::BIP9Deployment::NO_TIMEOUT;
 
         consensus.nMinimumChainWork = uint256{};

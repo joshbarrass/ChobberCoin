@@ -146,6 +146,7 @@ public:
         // vSeeds.emplace_back("dnsseed.chobbertools.com");
         // vSeeds.emplace_back("dnsseed.chobberpool.org");
         // vSeeds.emplace_back("dnsseed.koin-project.com");
+        vSeeds.emplace_back("chobber.barrass.dev");
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,28); // address starts with C
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,5);
